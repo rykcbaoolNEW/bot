@@ -3,8 +3,6 @@ const mineflayer = require("mineflayer");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-
-const saviorsAds = JSON.parse(fs.readFileSync(path.join(__dirname, 'ads.json'))).saviorsAds;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const webhookURL = "https://discord.com/api/webhooks/1330532752562589729/w3hY8Arl70VuXEolV4Thmrb5Tr-3aMZ5W_mqd5NX0jA-7hnXoaF2xrNhsmv4xBNQ54nR";
@@ -35,29 +33,9 @@ function createBot() {
         }
     }
 
-    async function sendDiscordAlert(message) {
-        try {
-            await axios.post(webhookUrl, { content: message });
-        } catch (error) {
-            console.error('Failed to send Discord webhook:', error);
-        }
-    }
+
     
-    async function sendAdWithCooldown() {
-    while (true) {
-        try {
-            if (canSendMessage) {
-                bot.chat(getRandomAd());
-                await sleep(153000);
-            } else {
-                await sleep(1000);
-            }
-        } catch (err) {
-            console.log('Error sending message:', err);
-            await sleep(5000);
-        }
-    }
-}
+   
 
 bot.on("message", async (message) => { // Make sure this function is async
     const messageString = message.toString();
@@ -83,14 +61,7 @@ let weatherAvailable = true;
         bot.setControlState('forward', true);
     });
 
-    bot.on("playerJoined", (player) => {
-    const targetPlayers = ["ryk_cbaool", "iced_cave"]; // List of players to monitor
 
-    if (targetPlayers.includes(player.username)) {
-        bot.chat("Best player has joined");
-        console.log(`${player.username} joined. Announced in chat.`);
-    }
-});
 
     
     bot.on('spawn', () => {
@@ -100,57 +71,8 @@ let weatherAvailable = true;
         hasSpawnedOnce = true;
     });
 
-    
-bot.on("chat", (username, message) => {
-    if (username === bot.username) return; // Ignore the bot's own messages
-
-    // Check if the message contains a TPA request sent to the bot
-    const tpaRequestPattern = /^(\w+) wants to teleport to you\.$/;
-    if (tpaRequestPattern.test(message)) {
-        console.log(`TPA request detected from ${username}.`);
-
-        // Prepare the webhook data
-        const data = {
-            username: "Minecraft Bot",
-            avatar_url: "https://i.imgur.com/AfFp7pu.png", // Optional bot avatar image
-            content: `**TPA Request Received:**\nFrom: ${username}\nMessage: "${message}"`
-        };
-
-        // Send the TPA request details to Discord
-        axios.post(tpaLogger, data)
-            .then(() => {
-                console.log(`Successfully sent TPA request notification for ${username}.`);
-            })
-            .catch((error) => {
-                console.error(`Failed to send webhook for TPA request from ${username}:`, error.message);
-            });
-    }
-});
 
 
-
-	bot.on("entitySpawn", (entity) => {
-    // Check if the entity is a player, is not the bot itself, and is not on the allowed list
-    if (entity.type === 'player' && entity.username !== bot.username && !allowed.includes(entity.username)) {
-        console.log(`Player ${entity.username} came into view!`);
-
-        // Prepare the data for the webhook
-        const data = {
-            username: "Watch Dog",
-            avatar_url: "https://i.imgur.com/AfFp7pu.png", // Optional bot avatar image
-            content: `**Player Detected:** ${entity.username}\nLocation: X=${entity.position.x.toFixed(1)}, Y=${entity.position.y.toFixed(1)}, Z=${entity.position.z.toFixed(1)}`
-        };
-
-        // Send the notification to Discord
-        axios.post(webhookURL, data)
-            .then(() => {
-                console.log(`Successfully sent player detection notification for ${entity.username}.`);
-            })
-            .catch((error) => {
-                console.error(`Failed to send webhook for ${entity.username}:`, error.message);
-            });
-    }
-});
 
 
 
@@ -160,73 +82,7 @@ bot.on("chat", (username, message) => {
         bot.end();
     });
 
-     bot.on('time', () => {
-        const weather = bot.world.weather;
-        if (weather === 'clear' && lastWeatherState !== 'clear') {
-            sendDiscordAlert("The weather is now clear!");
-            console.log("The weather is now clear!");
-            lastWeatherState = 'clear';
-        } else if (weather === 'thunderstorm' && lastWeatherState !== 'thunder') {
-            sendDiscordAlert("@here A thunderstorm has started!");
-            console.log("A thunderstorm has started!");
-            lastWeatherState = 'thunder';
-        }
-    });
-    
-    bot.on('whisper', (username, message) => {
-    console.log(`Whisper from ${username}: ${message}`);
-});
-
-
-    //commands start
-   
-bot.on("chat", (username, message) => {
-    // Check if the message is "?kit" and if the player is allowed
-    if (message.trim().toLowerCase() === '?kit-pvp' && allowed.includes(username)) {
-        // Send a teleport request to the player
-        bot.chat(`/tpa ${username}`);
-       	console.log(`${username} orderd a kit!`);
-    } else if (message.trim().toLowerCase() === '?kit-pvp') {
-        // If the player is not allowed, inform them
-        bot.chat(`/msg ${username} You don't have permission to use this command.`);
-    }
-});
-
-
-
-    bot.on("chat", (username, message) => {
-        if (message.trim().toLowerCase() === '?bestclan') {
-            bot.chat('https://discord.gg/gevZAkn2HJ');
-        }
-    });
-    
-    bot.on("chat", (username, message) => {
-        if (message.trim().toLowerCase() === '?bestplayer') {
-            bot.chat('ryk_cbaool is the best 6b6t player. fr fr');
-        }
-    });
-    
-     bot.on("chat", (username, message) => {
-        if (message.trim().toLowerCase() === '?commands') {
-            bot.chat('Commands: ?bestplayer, ?bestclan');
-        }
-    });
-    
-     bot.on("chat", (username, message) => {
-    if (username === 'ryk_cbaool' && message.startsWith('?say ')) {
-        // If the user is ryk_cbaool and uses ?say, the bot will say the message
-        const sayMessage = message.slice(5).trim();
-
-        if (sayMessage.length > 0) {
-            bot.chat(sayMessage);
-        } else {
-            bot.chat(`/msg ${username} You need to provide a message to say.`);
-        }
-    } else if (username !== 'ryk_cbaool' && message.startsWith('?say ')) {
-        // Only log if someone ELSE tries to use ?say
-        console.log(`User ${username} tried to use the ?say command: ${message}`);
-    }
-});
+  
 
     
     //commands end
