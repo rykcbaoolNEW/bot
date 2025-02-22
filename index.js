@@ -25,7 +25,7 @@ function createBot() {
     });
 
     bot.once("spawn", async () => {
-        bot.chat("/login Savior");
+        bot.chat("/register Savior");
         bot.setControlState("forward", true); // Move forward on spawn
     });
 
