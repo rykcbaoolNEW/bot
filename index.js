@@ -1,4 +1,4 @@
-onst mineflayer = require("mineflayer");
+const mineflayer = require("mineflayer");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
