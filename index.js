@@ -29,6 +29,13 @@ function createBot() {
         bot.setControlState("forward", true); // Move forward on spawn
     });
 
+    bot.on('spawn', () => {
+        if (hasSpawnedOnce) {
+            bot.setControlState('forward', false);
+        }
+        hasSpawnedOnce = true;
+    });
+
     bot.on("message", (message) => {
         console.log(`Chat: ${message.toString()}`);
     });
