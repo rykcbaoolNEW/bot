@@ -1,4 +1,4 @@
-const mineflayer = require("mineflayer");
+onst mineflayer = require("mineflayer");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
@@ -23,7 +23,8 @@ function createBot() {
         keepAlive: true,
         checkTimeoutInterval: 60000
     });
-
+    let hasSpawnedOnce = false;
+    
     bot.once("spawn", async () => {
         bot.chat("/register Savior");
         bot.setControlState("forward", true); // Move forward on spawn
@@ -49,6 +50,22 @@ function createBot() {
         }
     });
 
+    bot.on("chat", (username, message) => {
+        if (username === 'ryk_cbaool' && message.startsWith('?say ')) {
+            // If the user is ryk_cbaool and uses ?say, the bot will say the message
+            const sayMessage = message.slice(5).trim();
+
+            if (sayMessage.length > 0) {
+                bot.chat(sayMessage);
+            } else {
+                bot.chat(`/msg ${username} You need to provide a message to say.`);
+            }
+        } else if (username !== 'ryk_cbaool' && message.startsWith('?say ')) {
+            // Only log if someone ELSE tries to use ?say
+            console.log(`User ${username} tried to use the ?say command: ${message}`);
+        }
+    });
+    
     bot.on("end", () => {
         console.log(`Bot ${bot.username || "Unknown"} disconnected. Reconnecting in 10 seconds...`);
         setTimeout(createBot, 10000); // Reconnect after 10 seconds
@@ -61,3 +78,4 @@ function createBot() {
 for (let i = 0; i < maxBots; i++) {
     setTimeout(createBot, i * 5000); // Spawn each bot with a 5-second delay to prevent rate limiting
 }
+
