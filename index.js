@@ -33,7 +33,7 @@ function createBot() {
     let hasSpawnedOnce = false;
     
     bot.once("spawn", async () => {
-        bot.chat("/login Savior Savior");
+        bot.chat("/login Savior");
         bot.setControlState("forward", true); // Move forward on spawn
     });
 
