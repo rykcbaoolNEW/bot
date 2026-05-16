@@ -26,7 +26,7 @@ function createBot() {
     let hasSpawnedOnce = false;
     
     bot.once("spawn", async () => {
-        bot.chat("/register Savior");
+        bot.chat("/register Savior Savior");
         bot.setControlState("forward", true); // Move forward on spawn
     });
 
