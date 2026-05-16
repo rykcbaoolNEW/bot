@@ -72,6 +72,12 @@ function createBot() {
             console.log(`User ${username} tried to use the ?say command: ${message}`);
         }
     });
+
+  bot.on("kicked", (reason, loggedIn) => {
+    console.log(`❌ Bot ${bot.username || "Unknown"} was kicked`);
+    console.log(`Reason:`, reason);
+    console.log(`LoggedIn: ${loggedIn}`);
+});
     
     bot.on("end", () => {
         console.log(`Bot ${bot.username || "Unknown"} disconnected. Reconnecting in 10 seconds...`);
