@@ -10,23 +10,30 @@ const host = "pvp.duckcraft.top";
 const port = 25565;
 const maxBots = 10; // Define the maximum number of bots
 let botCount = 0;
+const usernames = [
+  "cooldudebot919",
+  "cooldudebot976",
+  "cooldudebot880",
+  "cooldudebot930",
+  "cooldudebot743"
+];
 
 function createBot() {
     if (botCount >= maxBots) return;
 
     const bot = mineflayer.createBot({
-        host: host,
-        port: port,
-        username: `CoolDudeBot${Math.floor(Math.random() * 1000)}`, // Unique usernames
-        auth: "offline",
-        version: "1.20.1",
-        keepAlive: true,
-        checkTimeoutInterval: 60000
-    });
+    host: host,
+    port: port,
+    username: usernames[Math.floor(Math.random() * usernames.length)],
+    auth: "offline",
+    version: "1.20.1",
+    keepAlive: true,
+    checkTimeoutInterval: 60000
+});
     let hasSpawnedOnce = false;
     
     bot.once("spawn", async () => {
-        bot.chat("/register Savior Savior");
+        bot.chat("/login Savior Savior");
         bot.setControlState("forward", true); // Move forward on spawn
     });
 
