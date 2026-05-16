@@ -5,7 +5,7 @@ const axios = require("axios");
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const webhookURL = "https://discord.com/api/webhooks/1330532752562589729/w3hY8Arl70VuXEolV4Thmrb5Tr-3aMZ5W_mqd5NX0jA-7hnXoaF2xrNhsmv4xBNQ54nR";
 const tpaLogger = "https://discord.com/api/webhooks/1330661283304968307/KMqyjhKNC7-u6MD-1FMPI1Zh8Y1qWb6f8xWNwNu5z1vaeUe-Uro0g5Aoy317REOCblbQ";
-const allowed = ["ryk_cbaool", ".JBTMojang", "Meacia", "saviors_on_top"]; // DO NOT EDIT
+const allowed = ["ryk_cbaool", ".JBTMojang", "Meacia", "saviors_on_top", "ryk_cool"]; // DO NOT EDIT
 const host = "pvp.duckcraft.top";
 const port = 25565;
 const maxBots = 10; // Define the maximum number of bots
@@ -51,7 +51,7 @@ function createBot() {
     });
 
     bot.on("chat", (username, message) => {
-        if (username === 'ryk_cbaool' && message.startsWith('?say ')) {
+        if (username === 'ryk_cool' && message.startsWith('?say ')) {
             // If the user is ryk_cbaool and uses ?say, the bot will say the message
             const sayMessage = message.slice(5).trim();
 
@@ -60,7 +60,7 @@ function createBot() {
             } else {
                 bot.chat(`/msg ${username} You need to provide a message to say.`);
             }
-        } else if (username !== 'ryk_cbaool' && message.startsWith('?say ')) {
+        } else if (username !== 'ryk_cool' && message.startsWith('?say ')) {
             // Only log if someone ELSE tries to use ?say
             console.log(`User ${username} tried to use the ?say command: ${message}`);
         }
