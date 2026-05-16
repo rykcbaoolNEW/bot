@@ -11,11 +11,11 @@ const port = 25565;
 const maxBots = 10; // Define the maximum number of bots
 let botCount = 0;
 const usernames = [
-  "cooldudebot919",
-  "cooldudebot976",
-  "cooldudebot880",
-  "cooldudebot930",
-  "cooldudebot743"
+  "CoolDudeBot919",
+  "CoolDudeBot976",
+  "CoolDudeBot880",
+  "CoolDudeBot930",
+  "CoolDudeBot743"
 ];
 
 function createBot() {
